@@ -1,5 +1,7 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import gptProcessText from '../api/gtpcall'
+
 
 const TextSection = () => {
   const [textValue, setTextValue] = useState("")
@@ -16,8 +18,11 @@ const TextSection = () => {
     // gptProcessText(textValue)
     if (checkboxState) {
       // auto insert 
+      gptProcessText(textValue, (e) => console.log(e, e.data.choices[0].text))
     } else {
       // manual insert
+      // gptProcessText(textValue, (e) => console.log(e, e.data.choices[0].text))
+
     }
   }
   // toggle checkbox
