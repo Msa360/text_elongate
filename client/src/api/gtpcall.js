@@ -2,13 +2,13 @@ import axios from "axios";
 
 
 function preprocessText(rawText) {
-    const myArray = rawText.split("[insert]");
+    // const myArray = rawText.split("[insert]");
 
-    return [prefix, suffix]
+    // return [prefix, suffix]
 }
 
 function gptProcessText(text, callback) {
-    const token = "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"
+    const token = ""
     axios.post("https://api.openai.com/v1/completions", {
         "model": "text-davinci-003",
         "prompt": "Quantum science is the study of the behavior of matter and energy at the atomic and subatomic levels. It is a field of science that seeks to understand the nature of the universe on the smallest scales of space and time.\n\nQuantum science has revolutionized our understanding of the physical world. Its discoveries have been incorporated into our foundational understanding of materials, chemistry, biology, and astronomy. These discoveries are a valuable resource for innovation, giving rise to devices such as lasers and transistors, and enabling real progress on technologies once considered purely speculative, such as quantum computers. Physicists ",
