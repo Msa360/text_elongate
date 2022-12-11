@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-require('dotenv').config(); // for .env vars
+
 
 const app = express();
 
@@ -9,9 +9,13 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-app.post("/api", (req, res) => {
+app.post("/api/textinsert", (req, res) => {
     // todo make api call to openai to add inserts
-    res.send("<h1>This is from express.js</h1>");
+    if (req.headers['authorization'] === "GeoHot") {
+      res.send(req.body);
+    } else {
+      res.send("To use the api, visit our website api section");
+    }
 });
 
 app.use((req, res, next) => {

@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import gptProcessText from '../api/gtpcall'
+import sendText from '../api/gtpcall'
 
 
 const TextSection = () => {
@@ -18,7 +18,8 @@ const TextSection = () => {
     // gptProcessText(textValue)
     if (checkboxState) {
       // auto insert 
-      gptProcessText(textValue, (e) => console.log(e, e.data.choices[0].text))
+      // sendText(textValue, (e) => console.log(e, e.data.choices[0].text));
+      sendText(textValue, (e) => console.log(e.data));
     } else {
       // manual insert
       // gptProcessText(textValue, (e) => console.log(e, e.data.choices[0].text))
