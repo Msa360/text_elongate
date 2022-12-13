@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 function sendText(text, callback) {
-    axios.post("http://localhost:5000/api/textinsert", {
+    axios.post("/api/textinsert", {
         "text": text
       }, { headers: {"Content-Type": "application/json", "Authorization": "GeoHot"} })
     .then(function (resp) {
