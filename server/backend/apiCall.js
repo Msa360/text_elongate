@@ -1,19 +1,32 @@
-import axios from "axios";
+const axios = require("axios");
 require('dotenv').config(); // for .env vars
 
 
-function preprocessText(rawText) {
-    // const myArray = rawText.split("[insert]");
-
-    // return [prefix, suffix]
+function splitText(rawText) {
+    return rawText.split("[insert]"); 
 }
 
-function gptProcessText(text, callback) {
+function assembleText(textArray, callback) {
+    // textArray.length -1 because we don't want the last suffix 
+    for (let i = 0; i < textArray.length-1; i++) {
+        var prefix = "";
+        var suffix = "";
+        for (let j = 0; j < textArray.length; j++) {
+            if (j <= i) { prefix += textArray[j]; }
+            else { suffix += textArray[j]; }
+        }
+        gptProcessText(prefix, suffix, r => {
+            
+        })
+    }
+}
+
+function gptProcessText(prefix, suffix, callback) {
     const token = process.env.SECRET
     axios.post("https://api.openai.com/v1/completions", {
         "model": "text-davinci-003",
-        "prompt": "Quantum science is the study of the behavior of matter and energy at the atomic and subatomic levels. It is a field of science that seeks to understand the nature of the universe on the smallest scales of space and time.\n\nQuantum science has revolutionized our understanding of the physical world. Its discoveries have been incorporated into our foundational understanding of materials, chemistry, biology, and astronomy. These discoveries are a valuable resource for innovation, giving rise to devices such as lasers and transistors, and enabling real progress on technologies once considered purely speculative, such as quantum computers. Physicists ",
-        "suffix": " are exploring the potential of quantum science to transform our view of gravity and its connection to space and time. Quantum science may even reveal how everything in the universe (or in multiple universes) is connected to everything else through higher dimensions that our senses cannot comprehend.",
+        "prompt": prefix,
+        "suffix": suffix,
         "temperature": 0.7,
         "max_tokens": 256,
         "top_p": 1,
@@ -28,4 +41,6 @@ function gptProcessText(text, callback) {
     });
 }
 
-export { gptProcessText }
+
+
+module.exports = { gptProcessText, splitText }
