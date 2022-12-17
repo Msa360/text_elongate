@@ -2,20 +2,20 @@ const axios = require("axios");
 require('dotenv').config(); // for .env vars
 
 
-function makeInsertions(rawText, maxTok=3) {
-    assembleText(splitText(rawText), maxTok);
+// this is the final function to call in server, that handle multiple insert tags
+function makeInsertions(rawText, maxTok=10, callback) {
+    assembleText(splitText(rawText), maxTok, callback);
 }
 
 function splitText(rawText) {
     return rawText.split("[insert]"); 
 }
 
-function assembleText(textArray, maxTok) {
+function assembleText(textArray, maxTok, callback) {
 
     if (textArray.length === 1) {
-        console.log("stop");
-        console.log(textArray[0]);
-        return textArray[0];
+        callback(textArray[0]);
+        return;
     }
     var prefixRaw = ""; // without the [insert] tag
     var prefix = "";
@@ -32,7 +32,7 @@ function assembleText(textArray, maxTok) {
     prefix = prefixRaw + "[insert]"; // add insert tag at the end of prefix 
 
     gptProcessText(prefix, suffix, maxTok, (resp) => {
-        
+
         var newData = resp.data.choices[0].text;
 
         if (suffixArray.length === 1) {
@@ -41,7 +41,7 @@ function assembleText(textArray, maxTok) {
             var newARR = [ prefixRaw + newData + suffixArray[0] ].concat(suffixArray.slice(1));
         }
         
-        assembleText(newARR, maxTok);
+        assembleText(newARR, maxTok, callback);
     })
 }
 
@@ -54,7 +54,7 @@ function gptProcessText(prefix, suffix, maxTok=150, callback) {
         "temperature": 0.7,
         "max_tokens": maxTok,
         "top_p": 1,
-        "frequency_penalty": 1.01,
+        "frequency_penalty": 1.51,
         "presence_penalty": 0.66
     }, { headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`} })
     .then(function (resp) {

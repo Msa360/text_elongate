@@ -1,11 +1,8 @@
 const express = require("express");
 const path = require("path");
-const toolkit = require("./backend/apiCall") // Preprocess for text
+const gpi = require("./backend/apiCall") // GPT-API => GPI | Preprocess for text
 
-testtext = "this [insert] is a text[insert] for my essay[insert] yes."
-toolkit.makeInsertions(testtext);
 
-// ewfewfewfew;
 
 const app = express();
 
@@ -17,8 +14,8 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.post("/api/textinsert", (req, res) => {
     // todo make api call to openai to add inserts
     if (req.headers['authorization'] === "GeoHot") {
-      toolkit.gptProcessText("Albert Einstein was", "a scientist", 30, (resp) => {
-        res.send(resp.data.choices[0].text);
+      gpi.makeInsertions(req.body.text, 60, (processed) => {
+        res.send(processed);
       }
       )
     } else {
