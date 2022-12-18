@@ -1,14 +1,24 @@
 const axios = require("axios");
 require('dotenv').config(); // for .env vars
-
+const SITE_TAG = "(insert)"; // tag home made 
+const GPT_TAG = "[insert]"; // tag for insertions from openai
 
 // this is the final function to call in server, that handle multiple insert tags
-function makeInsertions(rawText, maxTok=10, callback) {
-    assembleText(splitText(rawText), maxTok, callback);
+function makeInsertions(rawText, maxTok=10, isAuto, callback) {
+    var taggedText = isAuto ? addTags(rawText) : rawText;
+    // if (isAuto) {var taggedText = addTags(rawText);} else { var taggedText = rawText;}
+    assembleText(splitText(taggedText), maxTok, callback);
 }
 
-function splitText(rawText) {
-    return rawText.split("[insert]"); 
+
+function addTags(rawText) {
+    var index = rawText.search(". ");
+    // todo: add SITE_TAG to random but plausible places in the rawText and return tagged text
+    return rawText;
+}
+
+function splitText(taggedText) {
+    return taggedText.split(SITE_TAG); 
 }
 
 function assembleText(textArray, maxTok, callback) {
@@ -29,10 +39,10 @@ function assembleText(textArray, maxTok, callback) {
             suffixArray.push(textArray[i]);
         }
     }
-    prefix = prefixRaw + "[insert]"; // add insert tag at the end of prefix 
+    prefix = prefixRaw + GPT_TAG; // add insert tag at the end of prefix 
 
     gptProcessText(prefix, suffix, maxTok, (resp) => {
-
+        console.log(resp.data)
         var newData = resp.data.choices[0].text;
 
         if (suffixArray.length === 1) {

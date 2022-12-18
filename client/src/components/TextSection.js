@@ -20,7 +20,6 @@ const TextSection = () => {
       // sendText(textValue, (e) => console.log(e, e.data.choices[0].text));
       sendText(textValue, true, (r) => {
         // response data from the server is just the text so "r.data" to get text
-        console.log(r.data);
         setReceiveTextValue(r.data);
       });
     } else {
@@ -28,7 +27,6 @@ const TextSection = () => {
       // gptProcessText(textValue, (r) => console.log(r, r.data.choices[0].text))
       sendText(textValue, false, (r) => {
         // response data from the server is just the text so "r.data" to get text
-        console.log(r.data);
         setReceiveTextValue(r.data); 
       });
     }
