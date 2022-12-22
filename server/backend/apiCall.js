@@ -56,7 +56,7 @@ function assembleText(textArray, maxTok, callback) {
 }
 
 function gptProcessText(prefix, suffix, maxTok=150, callback) {
-    const token = process.env.SECRET
+    const token = process.env.SECRET_API_KEY
     axios.post("https://api.openai.com/v1/completions", {
         "model": "text-davinci-003",
         "prompt": prefix,

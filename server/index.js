@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 
 // start express server on port 5000
-PORT = 5000
+PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log("server started on port "+PORT+", http://localhost:"+PORT);
 });
