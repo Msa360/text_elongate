@@ -71,8 +71,8 @@ function gptProcessText(prefix, suffix, maxTok=150, callback) {
         callback(resp);
     })
     .catch(function (error) {
+        console.log(error);
         callback(error);
-        console.log(error)
     });
 }
 
