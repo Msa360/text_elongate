@@ -25,4 +25,13 @@ npm run start
 ```
 This will start a server at <http://localhost:5000>.
 
-After making changes to React files in **text_elongate/client**, make sure to run **`npm run build`** in this directory since the server uses this final build.
+If you are not running on your local machine make sure to change **proxy** in **client/package.json**
+```json
+"proxy": "https:yourdomain.com"
+```
+or if you don't have a domain put ip address with port:
+```json
+"proxy": "http:123.456.78.910:8080"
+```
+
+After making changes to files in **/client**, make sure to run **`npm run build`** in this directory since the server uses this final build else it will not update.

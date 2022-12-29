@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Before building & deploying, if you are not running on your local machine make sure to change **proxy** in **client/package.json**
+```json
+"proxy": "https:yourdomain.com"
+```
+or if you don't have a domain put ip address with port:
+```json
+"proxy": "http:123.456.78.910:8080"
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
