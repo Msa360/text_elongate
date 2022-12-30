@@ -41,17 +41,21 @@ function assembleText(textArray, maxTok, callback) {
     }
     prefix = prefixRaw + GPT_TAG; // add insert tag at the end of prefix 
 
-    gptProcessText(prefix, suffix, maxTok, (resp) => {
-        console.log(resp.data)
-        var newData = resp.data.choices[0].text;
-
-        if (suffixArray.length === 1) {
-            var newARR = [ prefixRaw + newData + suffixArray[0] ];
+    gptProcessText(prefix, suffix, maxTok, (resp, err) => {
+        if (err) {
+            console.log("\x1b[31m"+"CRITICAL: an axios error happend with status code:", err.response.status, err.response.statusText)
+            assembleText(["An error happened"], maxTok, callback)
         } else {
-            var newARR = [ prefixRaw + newData + suffixArray[0] ].concat(suffixArray.slice(1));
+            var newData = resp.data.choices[0].text;
+
+            if (suffixArray.length === 1) {
+                var newARR = [ prefixRaw + newData + suffixArray[0] ];
+            } else {
+                var newARR = [ prefixRaw + newData + suffixArray[0] ].concat(suffixArray.slice(1));
+            }
+
+            assembleText(newARR, maxTok, callback);
         }
-        
-        assembleText(newARR, maxTok, callback);
     })
 }
 
@@ -65,14 +69,13 @@ function gptProcessText(prefix, suffix, maxTok=150, callback) {
         "max_tokens": maxTok,
         "top_p": 1,
         "frequency_penalty": 1.51,
-        "presence_penalty": 0.66
+        "presence_penalty": 0.86
     }, { headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`} })
     .then(function (resp) {
         callback(resp);
     })
     .catch(function (error) {
-        console.log(error);
-        callback(error);
+        callback("", error);
     });
 }
 

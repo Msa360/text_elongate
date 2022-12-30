@@ -14,7 +14,8 @@ RUN npm install
 
 ENV PORT=8080
 
-ENV SECRET_API_KEY=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
+ARG api_key
+ENV SECRET_API_KEY=${api_key}
 
 EXPOSE 8080
 

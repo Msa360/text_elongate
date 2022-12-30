@@ -16,8 +16,7 @@ app.post("/api/textinsert", (req, res) => {
     if (req.headers['authorization'] === "GeoHot") {
       gpi.makeInsertions(req.body.text, 60, req.body.isAuto, (processed) => {
         res.send(processed);
-      }
-      )
+      });
     } else {
       res.send("To use the api, visit our website api section");
     }
