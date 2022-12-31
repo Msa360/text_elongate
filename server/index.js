@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.post("/api/textinsert", (req, res) => {
     // todo make api call to openai to add inserts
     if (req.headers['authorization'] === "GeoHot") {
-      gpi.makeInsertions(req.body.text, 60, req.body.isAuto, (processed) => {
+      gpi.makeInsertions(req.body.text, 60, req.body.auto, req.body.density, (processed) => {
         res.send(processed);
       });
     } else {

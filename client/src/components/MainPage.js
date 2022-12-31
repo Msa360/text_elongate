@@ -19,7 +19,7 @@ const MainPage = () => {
                   <ContentCopyIcon fontSize='small' />
                 </IconButton>
               </CopyToClipboard>
-              tags if you want insertions to be made at specific places.<br/>If you let auto-insert, insertions will be made automatically (still in beta). 
+              tags if you want insertions to be made at specific places.<br/>If you let auto-insert, insertions will be made automatically, and a higher density will produce more insertions.
             </p>
             <TextSection />
         </div>

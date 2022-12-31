@@ -1,20 +1,32 @@
 const axios = require("axios");
-require('dotenv').config(); // for .env vars
+require('dotenv').config(); // for vars in .env file
 const SITE_TAG = "(insert)"; // tag home made 
 const GPT_TAG = "[insert]"; // tag for insertions from openai
 
 // this is the final function to call in server, that handle multiple insert tags
-function makeInsertions(rawText, maxTok=10, isAuto, callback) {
-    var taggedText = isAuto ? addTags(rawText) : rawText;
-    // if (isAuto) {var taggedText = addTags(rawText);} else { var taggedText = rawText;}
+function makeInsertions(rawText, maxTok=10, isAuto, density, callback) {
+    if (isAuto) {
+        var taggedText = addTags(rawText, density);
+    } else {
+        var taggedText = rawText;
+    }
     assembleText(splitText(taggedText), maxTok, callback);
 }
 
 
-function addTags(rawText) {
-    var index = rawText.search(". ");
-    // todo: add SITE_TAG to random but plausible places in the rawText and return tagged text
-    return rawText;
+function addTags(rawText, density) {
+    // Split the text into an array of words
+    const words = rawText.split(' ');
+    
+    // Choose a random index to insert the word, and index is at least one so it never put text before.
+    const insertGap = Math.max(Math.floor(1 / density), 1);
+    for (let i = 1; i <= 5; i += insertGap) {
+        // Insert the tag at the chosen index
+        words.splice(i, 0, SITE_TAG);
+    }
+    console.log(words.join(' '));
+    // Join the array of words back into a single string and return it
+    return words.join(' ');
 }
 
 function splitText(taggedText) {
