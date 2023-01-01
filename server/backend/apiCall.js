@@ -13,16 +13,17 @@ function makeInsertions(rawText, maxTok=10, isAuto, density, callback) {
     assembleText(splitText(taggedText), maxTok, callback);
 }
 
-
+// here density is between 0...1
 function addTags(rawText, density) {
     // Split the text into an array of words
     const words = rawText.split(' ');
     
     // Choose a random index to insert the word, and index is at least one so it never put text before.
-    const insertGap = Math.max(Math.floor(1 / density), 1);
-    for (let i = 1; i <= 5; i += insertGap) {
+    const max = Math.min(Math.round(density * 5), 5);
+    const insertGap = Math.max(Math.floor(words.length / max), 1);
+    for (let i = 1; i <= max; i += 1) {
         // Insert the tag at the chosen index
-        words.splice(i, 0, SITE_TAG);
+        words.splice(i * insertGap, 0, SITE_TAG);
     }
     console.log(words.join(' '));
     // Join the array of words back into a single string and return it
@@ -59,6 +60,7 @@ function assembleText(textArray, maxTok, callback) {
             assembleText(["An error happened"], maxTok, callback)
         } else {
             var newData = resp.data.choices[0].text;
+            console.log(resp.data)
 
             if (suffixArray.length === 1) {
                 var newARR = [ prefixRaw + newData + suffixArray[0] ];
@@ -71,7 +73,7 @@ function assembleText(textArray, maxTok, callback) {
     })
 }
 
-function gptProcessText(prefix, suffix, maxTok=150, callback) {
+function gptProcessText(prefix, suffix, maxTok=200, callback) {
     const token = process.env.SECRET_API_KEY
     axios.post("https://api.openai.com/v1/completions", {
         "model": "text-davinci-003",
@@ -80,8 +82,8 @@ function gptProcessText(prefix, suffix, maxTok=150, callback) {
         "temperature": 0.7,
         "max_tokens": maxTok,
         "top_p": 1,
-        "frequency_penalty": 1.51,
-        "presence_penalty": 0.86
+        "frequency_penalty": 1.50,
+        "presence_penalty": 0.15
     }, { headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`} })
     .then(function (resp) {
         callback(resp);
@@ -93,4 +95,4 @@ function gptProcessText(prefix, suffix, maxTok=150, callback) {
 
 
 
-module.exports = { makeInsertions, gptProcessText, splitText }
+module.exports = { makeInsertions }

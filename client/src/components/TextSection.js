@@ -12,12 +12,12 @@ import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 
 const TextSection = () => {
   const [textValue, setTextValue] = useState("");
-  const [checkboxState, setCheckboxState] = useState(true);
+  const [checkboxState, setCheckboxState] = useState(false);
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
   const [receiveTextValue, setReceiveTextValue] = useState("")
 
-  const [sliderValue, setSliderValue] = useState(0.20);
+  const [sliderValue, setSliderValue] = useState(0.30);
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
@@ -53,7 +53,7 @@ const TextSection = () => {
     <div style={{padding: 15}}>
         <TextField label="Enter your text here" value={textValue} onChange={(e) => {setTextValue(e.target.value)}} multiline fullWidth maxRows={500}/>
         <div>
-            <FormControlLabel control={<Checkbox {...label} onChange={toggleCheckboxState} defaultChecked />} label="auto-insert" />
+            <FormControlLabel control={<Checkbox {...label} onChange={toggleCheckboxState} />} label="auto-insert" />
             <Button variant="contained" onClick={handleClick} disableElevation>Process</Button>
             {checkboxState &&
               <div style={{padding: 15}}>
